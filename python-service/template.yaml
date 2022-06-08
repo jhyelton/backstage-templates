@@ -66,6 +66,16 @@ spec:
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
           container_port: ${{ parameters.service_port }}
 
+    - id: template-infra
+      name: Fetch infra Skeleton + Template
+      action: fetch:template
+      if: ${{ parameters.use_eks }}
+      input:
+        url: ./infra
+        values:
+          component_id: ${{ parameters.component_id }}
+          container_port: ${{ parameters.service_port }}
+
     - id: publish
       name: Publish
       action: publish:github
