@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "${{values.component_id | dump}}"
+name = ${{values.component_id | dump}}
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]

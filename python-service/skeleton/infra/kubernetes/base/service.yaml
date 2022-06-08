@@ -1,0 +1,17 @@
+{% if values.use_eks %}
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{values.component_id}}
+  labels:
+    app.kubernetes.io/name: ${{values.component_id}}
+    backstage.io/kubernetes-id: ${{values.component_id}}
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: app
+  selector:
+    app.kubernetes.io/name: ${{values.component_id}}
+    backstage.io/kubernetes-id: ${{values.component_id}}
+{% endif %}

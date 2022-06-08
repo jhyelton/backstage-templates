@@ -37,6 +37,10 @@ spec:
           ui:options:
             allowedKinds:
               - Group
+        use_eks:
+          title: Use EKS?
+          type: boolean
+          description: Will this service run on EKS?
     - title: Choose a location
       required:
         - repoUrl
@@ -60,7 +64,7 @@ spec:
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
-          http_port: ${{ parameters.service_port }}
+          container_port: ${{ parameters.service_port }}
 
     - id: publish
       name: Publish

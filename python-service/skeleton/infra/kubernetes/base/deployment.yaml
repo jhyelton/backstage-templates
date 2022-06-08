@@ -1,0 +1,55 @@
+{% if values.use_eks %}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{values.component_id}}
+  labels:
+    tags.datadoghq.com/service: ${{values.component_id}}
+    app.kubernetes.io/name: ${{values.component_id}}
+    backstage.io/kubernetes-id: ${{values.component_id}}
+spec:
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        tags.datadoghq.com/service: ${{values.component_id}}
+        app.kubernetes.io/name: ${{values.component_id}}
+        backstage.io/kubernetes-id: ${{values.component_id}}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - ${{values.component_id}}
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 100
+      containers:
+        - name: ${{values.component_id}}
+          image: upside-docker.jfrog.io/${{values.component_id}}:latest
+          resources:
+            requests:
+              memory: 500Mi
+              cpu: 500m
+            limits:
+              memory: 500Mi
+              cpu: 500m
+          ports:
+            - name: app
+              containerPort: ${{ values.container_port }}
+      serviceAccountName: bar
+      terminationGracePeriodSeconds: 60
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ${{values.component_id}}
+      backstage.io/kubernetes-id: ${{values.component_id}}
+{% endif %}

@@ -1,7 +1,7 @@
 version: "3.9"  # optional since v1.27.0
 services:
-  ${{values.component_id | dump}}:
+  ${{values.component_id}}:
     build: .
-    image: ${{values.component_id | dump}}
+    image: ${{values.component_id}}
     ports:
-      - ${{ values.http_port }}
+      - ${{ values.container_port }}
