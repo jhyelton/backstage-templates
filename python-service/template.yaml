@@ -27,7 +27,7 @@ spec:
           description: Help others understand what this service is for.
         service_port:
           title: Service Port
-          type: int
+          type: number
           description: The port the service should listen on.
         owner:
           title: Owner
